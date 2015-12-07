@@ -13,25 +13,26 @@ Cada fichero almacena un array de objetos `parada`. En donde cada `parada` es un
 
 #### parada.estacion
 
-- Tipo: `String`
-- Valor por defecto: `null`
+- Tipo: `Number`
+- Valor por defecto: `0`
 
 Identificador de la estación
 
 
-#### parada.hora
+#### parada.tiempo
 
-- Tipo: `String`
-- Valor por defecto: `00:00`
+- Tipo: `Number`
+- Valor por defecto: `0`
 
-Es la hora a la que para por dicha estación en formato `hh:mm`. Para referirse a trenes que pasan a horas superiores de las `23:59` se deberán sumar 24 horas.
+Es la diferencia de tiempo, en minutos, desde que sale de la estación inicial a la actual. La estación inicial es aquella en la que `tiempo` vale `0`.
 
-Ejemplo. Para en la estación `A` a las `23:57` y en la `B` a las `0:01`.
+Ejemplo. El tren sale de la estación `0` a las `23:00`, para en la estación `1` a las `23:57` y en la `2` a las `0:01`.
 
 ```JSON
 [
-  {estacion:"A", hora: "23:57"},
-  {estacion:"B", hora: "24:01"}
+  {"estacion": 0, "tiempo": 0},
+  {"estacion": 1, "tiempo": 57},
+  {"estacion": 2, "tìempo": 61}
 ]
 ```
 
@@ -44,8 +45,10 @@ Fichero `720.json` donde `720` es un tren de la línea 1 de Metro de Madrid sent
 
 ```JSON
 [
-  {estacion:"Pinar de Chamartín", hora:"10:37"},
-  {estacion:"Bambú"             , hora:"10:40"},
-  {estacion:"Chamartín"         , hora:"10:43"}
+  {"estacion":1001, "tiempo":0},
+  {"estacion":1002, "tiempo":4},
+  {"estacion":1003, "tiempo":6}
 ]
 ```
+
+En donde 1001, 1002, 1003 son códigos de paradas de la línea 1.

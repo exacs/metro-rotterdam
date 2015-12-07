@@ -1,0 +1,22 @@
+[
+  {"estacion": 0,  "tiempo": 0},
+  {"estacion": 1,  "tiempo": 2},
+  {"estacion": 2,  "tiempo": 3},
+  {"estacion": 3,  "tiempo": 4},
+  {"estacion": 4,  "tiempo": 6},
+  {"estacion": 5,  "tiempo": 8},
+  {"estacion": 6,  "tiempo": 10},
+  {"estacion": 7,  "tiempo": 11},
+  {"estacion": 8,  "tiempo": 12},
+  {"estacion": 9,  "tiempo": 13},
+  {"estacion": 10, "tiempo": 15},
+  {"estacion": 11, "tiempo": 17},
+  {"estacion": 12, "tiempo": 19},
+  {"estacion": 13, "tiempo": 21},
+  {"estacion": 14, "tiempo": 23},
+  {"estacion": 15, "tiempo": 25},
+  {"estacion": 16, "tiempo": 27},
+  {"estacion": 17, "tiempo": 29},
+  {"estacion": 18, "tiempo": 31},
+  {"estacion": 19, "tiempo": 32} 
+]

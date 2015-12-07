@@ -1,5 +1,33 @@
 [
-  {"id": 0, "nombre":"Rotterdam Centraal"},
-  {"id": 1, "nombre":"Ántón"},
-  {"id": 2, "nombre":"Mi casa"}
+  {"id": 0,  "nombre":"Schiedam Centrum"},
+  {"id": 1,  "nombre":"Marconiplein"},
+  {"id": 2,  "nombre":"Delfschaven"},
+  {"id": 3,  "nombre":"Coolhaven"},
+  {"id": 4,  "nombre":"Dijkzigt"},
+  {"id": 5,  "nombre":"Eendrachtsplein"},
+  {"id": 6,  "nombre":"Beurs"},
+  {"id": 7,  "nombre":"Blaak"},
+  {"id": 8,  "nombre":"Oostplein"},
+  {"id": 9,  "nombre":"Gerdesiaweg"},
+  {"id": 10, "nombre":"Voorschoterlaan"},
+  {"id": 11, "nombre":"Kralingse Zoom"},
+  {"id": 12, "nombre":"Capelsebrug"},
+  {"id": 13, "nombre":"Schenkel"},
+  {"id": 14, "nombre":"Prisenlaan"},
+  {"id": 15, "nombre":"Oosterflank"},
+  {"id": 16, "nombre":"Alexander"},
+  {"id": 17, "nombre":"Graskuid"},
+  {"id": 18, "nombre":"Romeynshof"},
+  {"id": 19, "nombre":"Binnenhof"},
+
+  {"id": 20, "nombre":"Hesseplaats"},
+  {"id": 21, "nombre":"Nieuw Verlaat"},
+  {"id": 22, "nombre":"Ambachtsland"},
+  {"id": 23, "nombre":"De Tochten"},
+  {"id": 24, "nombre":"Nesselande"},
+
+  {"id": 25, "nombre":"Slotan"},
+  {"id": 26, "nombre":"Capelle Centrum"},
+  {"id": 27, "nombre":"De Terp"}
+
 ]

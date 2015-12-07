@@ -1,0 +1,10 @@
+[
+  {
+    "id"      : "A0",
+    "linea"   : "A",
+    "sentido" : 0,
+    "hora_inicio" : "07:33",
+    "hora_fin"    : "18:43",
+    "intervalo": 10
+  }
+]
