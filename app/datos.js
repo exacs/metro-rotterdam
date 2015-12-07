@@ -30,6 +30,14 @@ var datos = {
   _recorridos : [],
 
   /**
+   * Almacena las distancias desde un punto fijo (el destino del trayecto)
+   * hacia las demás estaciones
+   * - En el array, el índice es el ID de la estación y el número, la distancia
+   *   hacia dicho punto fijo
+   */
+  _heuristica : [],
+
+  /**
    * Carga el array de estaciones
    *
    * @param callback - función que ejecutar con cada dato cargado.
@@ -186,5 +194,30 @@ var datos = {
       self._recorridos.push(data);
       callback(data);
     });
+  },
+
+  /**
+   * Carga la heurística
+   */
+  cargarHeuristica: function(destino, callback) {
+    var self = this;
+    $.getJSON('data/heuristica.json', function(data) {
+      self._heuristica = new Array(self._estaciones.length);
+      $.each(data, function(i, value) {
+        if (value.estacion1==destino) {
+          self._heuristica[value.estacion2] = value.distancia;
+        }
+      });
+      callback();
+    });
+  },
+
+  /**
+   * Retorna la distancia entre la distancia fija y "a". Se retorna en metros
+   *
+   * @param a - Object estación
+   */
+  distancia : function(origen) {
+    return this._heuristica[origen];
   }
 };

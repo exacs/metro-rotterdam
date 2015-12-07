@@ -1,80 +1,36 @@
 /**
- * Implementación de la lista abierta mediante un árbol binario
+ * Implementación de la lista abierta mediante la implementación de la función
+ * sort() de Javascript
  *
- * Esta implementación permite que las operaciones de "insertar" y "extraer"
- * tengan una complejidad O(n) = log2(n)
+ * La implementación depende del navegador. Generalmente la complejidad de la
+ * misma será de:
+ * - O(1) (constante) para la función extraer
+ * - O(n) (lineal)    para la función insertar
+ *
  */
 var listaAbierta = {
-  // Campos y funciones auxiliares privadas
-
   // Array con todos los elementos de la lista abierta
   _elements : [],
 
-  // Funciones para calcular los índices de los elementos
-  // "padre", "hijo izquierdo" e "hijo derecho"
-  _padre : function(i) {return parseInt((i-1)/2)},
-  _izq   : function(i) {return i*2+1},
-  _dch   : function(i) {return i*2+2},
-
-  // Intercambia la posición entre dos elementos del array
-  _swap  : function(i,j) {
-    var tmp = this._elements[i];
-    this._elements[i] = this._elements[j];
-    this._elements[j] = tmp;
-  },
-
-  // Recorre el árbol hacia arriba desde el nodo "i".
-  //
-  // En cada iteración, asegura que el elemendo del nodo "i" está correctamente
-  // colocado con respecto a su nodo padre.
-  _recorrerArriba : function(i) {
-    if (i>0 && this._elements[i] < this._elements[this._padre(i)]) {
-      this._swap(i, this._padre(i));
-      this._recorrerArriba(this._padre(i));
-    }
-  },
-
-  // Recorre el árbol hacia abajo desde el nodo "i".
-  //
-  // En cada iteración, verifica que el nodo "i" está bien colocado con
-  // respecto a sus nodos hijos.
-  _recorrerAbajo : function(i) {
-    if (i>this._elements.length) return;
-
-    var mayor;
-    if (this._dch(i) >= this._elements.length) {
-      mayor = this._izq(i);
-    } else if (this._elements[this._izq(i)] > this._elements[this._dch(i)]) {
-      mayor = this._izq(i);
-    } else {
-      mayor = this._dch(i);
-    }
-
-    if ( this._elements[i] > this._elements[mayor]) {
-      this._swap(i, mayor);
-      this._recorrerAbajo(mayor);
-    }
-  },
-  
   /**
-   * Inserta un elemento en el árbol en su posición correcta.
+   * Inserta un elemento en la lista abierta.
+   *
+   * @param key - Clave del elemento. Sirve para introducir el elemento en su
+   *    posición correcta
+   *
+   * @param val - Valor del elemento.
    */
-  insertar : function(e) {
-    this._elements.push(e);
-    this._recorrerArriba(this._elements.length-1);
+  insertar : function(key, val) {
+    this._elements.push({k:key, v:val});
+    this._elements.sort(function(a,b) {return a.k - b.k});
   },
 
   /**
    * Extrae el menor elemento del árbol retornándolo
    */
-  extraer  : function() {
-    var ret = this._elements[0];
-    var ultimo = this._elements.pop();
-
-    if (this._elements.length>0) {
-      this._elements[0] = ultimo;
-    }
-    this._recorrerAbajo(0);
-    return ret;
+  extraer : function() {
+    return this._elements.shift();
   }
 }
+
+var listaCerrada = [];
