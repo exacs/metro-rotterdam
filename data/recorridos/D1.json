@@ -1,7 +1,27 @@
 {
-  "id" : "A1",
-  "linea" : "A",
+  "id" : "D1",
+  "linea" : "D",
   "sentido": 1,
-  "paradas" : [],
-  "horarios" : []
+  "paradas" : [
+    {"idEstacion": 37, "tiempo": 0},
+    {"idEstacion": 36, "tiempo": 1},
+    {"idEstacion": 35, "tiempo": 4},
+    {"idEstacion": 34, "tiempo": 6},
+    {"idEstacion": 33, "tiempo": 8},
+    {"idEstacion": 32, "tiempo": 9},
+    {"idEstacion": 47, "tiempo": 11},
+    {"idEstacion": 46, "tiempo": 14},
+    {"idEstacion": 45, "tiempo": 19},
+    {"idEstacion": 44, "tiempo": 21},
+    {"idEstacion": 43, "tiempo": 22},
+    {"idEstacion": 42, "tiempo": 24},
+    {"idEstacion": 41, "tiempo": 26},
+    {"idEstacion": 40, "tiempo": 27},
+    {"idEstacion": 39, "tiempo": 28},
+    {"idEstacion": 38, "tiempo": 30}
+  ],
+  "horarios" : [
+    {"inicio":"7:15", "fin":"14:57", "intervalo":10},
+    {"inicio":"14:57", "fin":"18:09", "intervalo":5}
+  ]
 }
