@@ -5,7 +5,7 @@ var algoritmo = {
   TIEMPO_ESPERA_MAXIMO : 30,
 
   // Velocidad media del tren en km/h
-  VELOCIDAD_MEDIA : 65,
+  VELOCIDAD_MEDIA : 90,
 
   // Estación destino
   _destino : -1,

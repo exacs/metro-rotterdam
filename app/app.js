@@ -7,18 +7,21 @@
 
 (function() {
   // Cargar los datos
+  console.log("Comenzando...");
   datos.estaciones(function(i, estacion) {
     $('#origen').append($('<option>').val(estacion.id).text(estacion.nombre));
     $('#destino').append($('<option>').val(estacion.id).text(estacion.nombre));
   });
 
-  // TODO
-  // Dibujar el mapa
+
 
 
   // Cuando el usuario envía el formulario...
   $('#formulario').submit(function() {
-    // TODO
     console.log("Formulario enviado!");
+    //var origen  = datos.estacion($('#origen').val());
+    //var destino = datos.estacion($('#destino').val());
+    algoritmo.ejecutar(datos.estacion(0), datos.estacion(12), 10*60+3);
+    
   });
 })();

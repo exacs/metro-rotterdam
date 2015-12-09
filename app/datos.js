@@ -121,7 +121,7 @@ var datos = {
       // inicial
       var desplazamiento = -1;
       for (var i=0; i<recorrido.paradas.length && desplazamiento==-1; i++) {
-        if (recorrido.paradas[i].idEstacion==estacion) {
+        if (recorrido.paradas[i].idEstacion==estacion.id) {
           desplazamiento = recorrido.paradas[i].tiempo;
         }
       }
