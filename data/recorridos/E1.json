@@ -9,6 +9,7 @@
     {"idEstacion": 42, "tiempo": 5},
     {"idEstacion": 41, "tiempo": 6},
     {"idEstacion": 40, "tiempo": 8},
+    {"idEstacion": 6,  "tiempo": 9},
     {"idEstacion": 39, "tiempo": 10},
     {"idEstacion": 38, "tiempo": 12},
     {"idEstacion": 61, "tiempo": 14},
