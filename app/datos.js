@@ -116,7 +116,7 @@ var datos = {
     // Función auxiliar.
     // Obtiene el array de trenes que pasan por una "estacion" dentro de un
     // "recorrido"
-    function _obtenerEstaciones(recorrido) {
+    function _obtenerTrenes(recorrido) {
       // Obtener el desplazamiento en minutos del tren respecto a la estación
       // inicial
       var desplazamiento = -1;
@@ -144,6 +144,8 @@ var datos = {
           for (var i=inicio; i<=fin; i+=intervalo) {
             trenes.push({
               id : recorrido.id,
+              linea: recorrido.linea,
+              sentido: recorrido.sentido,
               hora : i + desplazamiento
             });
           } //for
@@ -153,19 +155,19 @@ var datos = {
     } // function
 
 
-    console.log('¿Qué trenes pasan por "' + estacion.nombre + '"?');
+    //console.log('¿Qué trenes pasan por "' + estacion.nombre + '"?');
     // 1. Cargar los recorridos de la estación
     var cargados = 0;
     var trenes = [];
     $.each(estacion.recorridos, function(i, idRecorrido) {
       self.recorridos(idRecorrido, function(recorrido) {
-        $.merge(trenes, _obtenerEstaciones(recorrido));
+        $.merge(trenes, _obtenerTrenes(recorrido));
         cargados++;
 
         if (cargados>=estacion.recorridos.length) {
           // Retornar ordenados
           trenes.sort(function(a,b) {return a.hora-b.hora;});
-          console.log('Por ' + estacion.nombre + ' pasan ' + trenes.length + ' trenes');
+          //console.log('Por ' + estacion.nombre + ' pasan ' + trenes.length + ' trenes');
           callback(trenes);
         }
       });
@@ -209,6 +211,49 @@ var datos = {
         }
       });
       callback();
+    });
+  },
+
+  /**
+   * Obtiene un array con los posibles trasbordos de una estación
+   *
+   * @param estacion - Object estación. La estación de la que obtener los
+   *    trasbordos.
+   *
+   * @param callback - Función a la que llamar cuando se obtengan los
+   *    trasbordos. Debe ser de la forma function(trenes) en donde "trenes" es
+   *    un array de objetos tren con los trenes siguientes.
+   *
+   */
+  trasbordos : function(estacion, trenActual, callback) {
+    // Lista de trasbordos admitidos
+    var admitidos = [
+      0,  // Schiedam Centrum
+      6,  // Beurs
+      38, // Rotterdam Centraal
+      12  // Capelsebrug
+    ];
+    
+    var actual = -1;
+    for (var i=0; i<admitidos.length && actual==-1; i++) {
+      if (admitidos[i]==estacion.id) {
+        actual = i;
+      }
+    }
+
+    if (actual==-1) {
+      callback([]);
+      return;
+    }
+
+    // Obtener trenes que pasan por la estación
+    datos.trenes(estacion, function(trenes) {
+      // Excluir el tren argumento
+      var filtrados = $.grep(trenes, function(tren, i) {
+        return trenActual.linea!=tren.linea;
+      });
+      
+      callback(filtrados);
     });
   },
 
