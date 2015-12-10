@@ -4,15 +4,18 @@ var algoritmo = {
   // Tiempo de espera máximo (en minutos) hasta que llegue el tren
   TIEMPO_ESPERA_MAXIMO : 30,
 
+  // Tiempo que se tarda en hacer un trasbordo
+  TIEMPO_TRASBORDO : 3,
+
   // Velocidad media del tren en km/h
-  VELOCIDAD_MEDIA : 90,
+  VELOCIDAD : 120,
 
   // Estación destino
   _destino : -1,
 
   // Nodo origen
   _origen : {
-    hijos : []
+    
   },
 
   /**
@@ -29,9 +32,10 @@ var algoritmo = {
     // Carga las heurísticas necesarias
     datos.cargarHeuristica(destino.id, function() {
       console.log(datos._heuristica);
-      console.log('Ejecutando algoritmo...');
+      console.log(hora + ' / Ejecutando algoritmo...');
       self._destino = destino;
-      self.subirse(origen, hora);
+      self._origen.estacion = origen
+      self.subirseAlTren(origen, hora);
     });
   },
 
@@ -44,13 +48,32 @@ var algoritmo = {
   },
 
   /**
+   * Avanzar en el algoritmo un paso.
+   */
+  siguientePaso: function() {
+    var self = this;
+    var el = listaAbierta.extraer();
+    var nodoExtraido = el.v;
+    
+    if (nodoExtraido.estacion.id==self._destino.id) {
+      self.fin();
+    } else if (nodoExtraido.estacion.id==self._origen.estacion.id) {
+      self.avanzarEnElTren(nodoExtraido);
+    } else if (nodoExtraido.estacion.id==nodoExtraido.anterior.estacion.id) {
+      self.avanzarEnElTren(nodoExtraido);
+    } else {
+      self.hacerTrasbordo(nodoExtraido);
+    }
+  },
+
+  /**
    * Ejecuta la regla "subirse a un tren". Introduce en la lista abierta todos
    * los trenes a los que se puede entrar estando en una estación.
    *
    * @param estacion - Estación desde la que se sube al tren
    * @param hora - Hora a la que la persona llega a la estación
    */
-  subirse : function(estacion, hora) {
+  subirseAlTren : function(estacion, hora) {
     var self = this;
     // Obtener todos los trenes que salen de mi estación
     datos.trenes(estacion, function(trenes) {
@@ -68,7 +91,7 @@ var algoritmo = {
         listaAbierta.insertar(f, nodo);
       });
       console.log(listaAbierta._elements);
-      self.avanzar();
+      self.siguientePaso();
     });
   },
 
@@ -76,20 +99,10 @@ var algoritmo = {
    * Ejecuta la regla "avanzar estando en un tren"
    *
    */
-  avanzar : function() {
+  avanzarEnElTren : function(nodoExtraido) {
     var self = this;
-    // Extraemos el primer elemento de la lista abierta
-    var el = listaAbierta.extraer();
-    var nodoExtraido = el.v;
-    var heuristica = self.heuristica(nodoExtraido.estacion);
-    listaCerrada.push(el);
 
-    if (heuristica==0) {
-      self.fin();
-      return;
-    }
-
-    console.log('Avanzar en tren desde ' + nodoExtraido.estacion.nombre + " mediante " + nodoExtraido.tren.id);
+    console.log(nodoExtraido.tren.hora + ' / Avanzar en tren desde ' + nodoExtraido.estacion.nombre + " mediante " + nodoExtraido.tren.id);
 
     datos.recorridos(nodoExtraido.tren.id, function(recorrido) {
       var s = -1;
@@ -108,20 +121,53 @@ var algoritmo = {
           nodoExtraido.g + transcurrido,
           nodoExtraido
         );
-        var f = nodoNuevo.g + heuristica;
+        var f = nodoNuevo.g + self.heuristica(nodoNuevo.estacion);
 
         listaAbierta.insertar(f, nodoNuevo);
       }
 
       console.log(listaAbierta._elements);
-      self.avanzar();
+      self.siguientePaso(true);
     });
   },
 
   /**
-   *
+   * Ejecuta la regla "hacer trasbordo" sobre el nodo "nodoExtraido".
    */
-  trasbordo : function() {
+  hacerTrasbordo : function(nodoExtraido) {
+    var self = this;
+
+    // Si "nodoExtraido" es resultado de un trasbordo, no hacer trasbordo
+    if (nodoExtraido.estacion.id != nodoExtraido.anterior.estacion.id) {
+      datos.trasbordos(nodoExtraido.estacion, nodoExtraido.tren, function(trenes) {
+        if (trenes.length==0) {
+          self.avanzarEnElTren(nodoExtraido);
+          return;
+        }
+        // Excluir los que sean en el pasado y los que superen el tiempo de
+        // espera máximo
+        var hora = nodoExtraido.tren.hora;
+        var filtrados = $.grep(trenes, function(tren, i) {
+          return hora + self.TIEMPO_TRASBORDO < tren.hora && tren.hora < hora+self.TIEMPO_ESPERA_MAXIMO;
+        });
+
+        if (filtrados.length>0) {
+          console.log('---- Trasbordo en ' + nodoExtraido.estacion.nombre + " desde " + nodoExtraido.tren.id);
+        }
+
+        // Calcular la "f" e insertar en la lista abierta
+        $.each(filtrados, function(i, tren) {
+          var transcurrido = tren.hora - nodoExtraido.tren.hora + 1/128;
+          var f = nodoExtraido.g + transcurrido + self.heuristica(nodoExtraido.estacion);
+          var nodo = new Nodo(nodoExtraido.estacion, tren, tren.hora - hora, nodoExtraido);
+
+          listaAbierta.insertar(f, nodo);
+        });
+
+        console.log(listaAbierta._elements);
+        self.avanzarEnElTren(nodoExtraido);
+      });
+    }
   },
 
   /**
@@ -131,6 +177,6 @@ var algoritmo = {
    * El valor se retorna en minutos
    */
   heuristica : function(origen) {
-    return datos.distancia(origen.id) / 1000 / this.VELOCIDAD_MEDIA * 60;
+    return datos.distancia(origen.id) / 1000 / this.VELOCIDAD * 60;
   }
 }
