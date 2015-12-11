@@ -5,7 +5,7 @@
   {"id": 3,  "recorridos": ["A0", "B0", "C0", "A1", "B1", "C1"], "nombre":"Coolhaven"},
   {"id": 4,  "recorridos": ["A0", "B0", "C0", "A1", "B1", "C1"], "nombre":"Dijkzigt"},
   {"id": 5,  "recorridos": ["A0", "B0", "C0", "A1", "B1", "C1"], "nombre":"Eendrachtsplein"},
-  {"id": 6,  "recorridos": ["A0", "B0", "C0", "A1", "B1", "C1"], "nombre":"Beurs"},
+  {"id": 6,  "recorridos": ["A0", "B0", "C0", "D0", "E0", "A1", "B1", "C1", "D1", "E1"], "nombre":"Beurs"},
   {"id": 7,  "recorridos": ["A0", "B0", "C0", "A1", "B1", "C1"], "nombre":"Blaak"},
   {"id": 8,  "recorridos": ["A0", "B0", "C0", "A1", "B1", "C1"], "nombre":"Oostplein"},
   {"id": 9,  "recorridos": ["A0", "B0", "C0", "A1", "B1", "C1"], "nombre":"Gerdesiaweg"},
