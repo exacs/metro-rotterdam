@@ -1,0 +1,33 @@
+.row {
+  padding-top: 20px;
+}
+
+#mapa {
+  height: auto;
+  width: 100%;
+}
+
+.ruta {
+  margin: 0;
+  padding: 0;
+}
+
+.ruta li {
+  margin-left: 17px;
+  padding: 0;
+}
+
+div.linea {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  text-align: center;
+  font-weight: bold;
+}
+
+div.linea-A {background: #009245; color:#FFF;}
+div.linea-B {background: #FFFF00; color:#000;}
+div.linea-C {background: #FF0000; color:#FFF;}
+div.linea-D {background: #29ABE2; color:#FFF;}
+div.linea-E {background: #2E3192; color:#FFF;}
+

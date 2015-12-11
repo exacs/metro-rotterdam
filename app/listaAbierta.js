@@ -50,6 +50,11 @@ var listaAbierta = {
    */
   extraer : function() {
     return this._elements.shift();
+  },
+
+
+  reset : function() {
+    this._elements = [];
   }
 }
 

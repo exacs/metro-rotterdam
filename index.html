@@ -3,40 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <title>Rotterdam Metro</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <form id="formulario" name="formulario" action="javascript:void(0)">
-    <label for="origen">
-      Estación de origen:
-      <select name="origen" id="origen">
-        <option value="-1" selected="selected">Selecciona un origen</option>
-      </select>
-    </label>
+  <div class="container">
+    <div class="row">
+      <form class="col-md-3" id="formulario" name="formulario" action="javascript:void(0)">
+        <div class="form-group">
+          <label for="origen">
+            Estación de origen:
+          </label>
+          <select name="origen" id="origen">
+            <option value="-1" selected="selected">Selecciona un origen</option>
+          </select>
+        </div>
 
-    <label for="destino">
-      Estación de destino:
-      <select name="destino" id="destino">
-        <option value="-1" selected="selected">Selecciona un destino</option>
-      </select>
-    </label> 
+        <div class="form-group">
+          <label for="destino">
+            Estación de destino:
+          </label>
+          <select name="destino" id="destino">
+            <option value="-1" selected="selected">Selecciona un destino</option>
+          </select>
+        </div>
 
-    <label for="hora">
-      Hora de salida:
-      <input type="text" id="hora" name="hora">
-    </label>
-    <input type="submit" value="Calcular">
-  </form>
+        <div class="form-group">
+          <label for="hora">
+            Hora de salida:
+          </label>
+          <input type="text" id="hora" name="hora" maxlength="5">
+        </div>
+        <input type="submit" class="btn btn-default" value="Calcular">
 
-  <div id="mapaestatico">
-    <object type="image/svg+xml" data="plano.svg" class="logo">
-    Kiwi Logo <!-- fallback image in CSS -->
-    </object>
+        <table id="pasos">
+          <tr class="paso">
+            <td class="hora">12:30</td>
+            <td class="texto">Llegar a la estación apetecán</td>
+          </tr>
+        </table>
+      </form>
+
+      <div class="col-md-9" id="mapaestatico">
+        <object id="mapa" type="image/svg+xml" data="plano.svg"></object>
+      </div>
+      
+    </div>
   </div>
-  <div id="mapa"></div>
+
   <script src="app/Nodo.js"></script>
   <script src="app/listaAbierta.js"></script>
-  <script src="lib/d3/d3.min.js"></script>
   <script src="lib/jquery/jquery.min.js"></script>
   <script src="app/datos.js"></script>
   <script src="app/algoritmo.js"></script>

@@ -5,7 +5,7 @@ var algoritmo = {
   TIEMPO_ESPERA_MAXIMO : 30,
 
   // Tiempo que se tarda en hacer un trasbordo
-  TIEMPO_TRASBORDO : 3,
+  TIEMPO_TRASBORDO : 2,
 
   // Velocidad media del tren en km/h
   VELOCIDAD : 120,
@@ -18,6 +18,19 @@ var algoritmo = {
     
   },
 
+  _hora : function (hora) {
+    var h = parseInt(hora / 60);
+    var m = parseInt(hora % 60);
+
+    if (h<10) h = '0'+h;
+    if (m<10) m = '0'+m;
+
+    return h + ':' + m;
+  },
+
+  // Función a la que llamar cuando acabe el algoritmo
+  _callback : null,
+
   /**
    * Ejecuta el algoritmo A* para hallar el camino óptimo entre dos estaciones
    *
@@ -27,24 +40,29 @@ var algoritmo = {
    *
    * Retorna un array con los pasos a seguir
    */
-  ejecutar : function(origen, destino, hora) {
+  ejecutar : function(origen, destino, hora, callback) {
     var self = this;
+    listaCerrada = [];
+    listaAbierta.reset();
+    self.origen = {};
     // Carga las heurísticas necesarias
     datos.cargarHeuristica(destino.id, function() {
       console.log(datos._heuristica);
-      console.log(hora + ' / Ejecutando algoritmo...');
+      console.log(self._hora(hora) + ' / Ejecutando algoritmo...');
       self._destino = destino;
       self._origen.estacion = origen
+      self._origen.hora = hora;
       self.subirseAlTren(origen, hora);
+      self._callback = callback;
     });
   },
 
   /**
    * Se ejecuta al finalizar el algoritmo
    */
-  fin : function() {
-    console.log('Fin del algoritmo');
-    console.log(listaCerrada);
+  fin : function(nodoExtraido) {
+    console.log(this._hora(this._origen.hora + nodoExtraido.g) + ' / Fin del algoritmo');
+    this._callback(listaCerrada);
   },
 
   /**
@@ -54,9 +72,11 @@ var algoritmo = {
     var self = this;
     var el = listaAbierta.extraer();
     var nodoExtraido = el.v;
+    listaCerrada.push(nodoExtraido);
+    console.log(el.k + ' / Extraido : ' + nodoExtraido.estacion.nombre);
     
     if (nodoExtraido.estacion.id==self._destino.id) {
-      self.fin();
+      self.fin(nodoExtraido);
     } else if (nodoExtraido.estacion.id==self._origen.estacion.id) {
       self.avanzarEnElTren(nodoExtraido);
     } else if (nodoExtraido.estacion.id==nodoExtraido.anterior.estacion.id) {
@@ -90,7 +110,7 @@ var algoritmo = {
 
         listaAbierta.insertar(f, nodo);
       });
-      console.log(listaAbierta._elements);
+      //console.log(listaAbierta._elements);
       self.siguientePaso();
     });
   },
@@ -102,7 +122,6 @@ var algoritmo = {
   avanzarEnElTren : function(nodoExtraido) {
     var self = this;
 
-    console.log(nodoExtraido.tren.hora + ' / Avanzar en tren desde ' + nodoExtraido.estacion.nombre + " mediante " + nodoExtraido.tren.id);
 
     datos.recorridos(nodoExtraido.tren.id, function(recorrido) {
       var s = -1;
@@ -115,6 +134,7 @@ var algoritmo = {
 
       if (s<recorrido.paradas.length) {
         var transcurrido = recorrido.paradas[s].tiempo - recorrido.paradas[s-1].tiempo;
+        var nuevoTren = nodoExtraido.tren;
         var nodoNuevo = new Nodo(
           datos.estacion(recorrido.paradas[s].idEstacion),
           nodoExtraido.tren,
@@ -123,10 +143,15 @@ var algoritmo = {
         );
         var f = nodoNuevo.g + self.heuristica(nodoNuevo.estacion);
 
+        console.log(
+          self._hora(self._origen.hora + nodoExtraido.g) +
+          ' [' + nodoExtraido.tren.id + '] ' +
+          nodoExtraido.estacion.nombre + ' > ' + nodoNuevo.estacion.nombre
+        );
         listaAbierta.insertar(f, nodoNuevo);
       }
 
-      console.log(listaAbierta._elements);
+      //console.log(listaAbierta._elements);
       self.siguientePaso(true);
     });
   },
@@ -152,19 +177,19 @@ var algoritmo = {
         });
 
         if (filtrados.length>0) {
-          console.log('---- Trasbordo en ' + nodoExtraido.estacion.nombre + " desde " + nodoExtraido.tren.id);
+          console.log('Trasbordo en ' + nodoExtraido.estacion.nombre);
         }
 
         // Calcular la "f" e insertar en la lista abierta
         $.each(filtrados, function(i, tren) {
-          var transcurrido = tren.hora - nodoExtraido.tren.hora + 1/128;
+          var transcurrido = tren.hora - hora + 1/128;
           var f = nodoExtraido.g + transcurrido + self.heuristica(nodoExtraido.estacion);
-          var nodo = new Nodo(nodoExtraido.estacion, tren, tren.hora - hora, nodoExtraido);
+          var nodo = new Nodo(nodoExtraido.estacion, tren, nodoExtraido.g + transcurrido, nodoExtraido);
 
           listaAbierta.insertar(f, nodo);
         });
 
-        console.log(listaAbierta._elements);
+        //console.log(listaAbierta._elements);
         self.avanzarEnElTren(nodoExtraido);
       });
     }
