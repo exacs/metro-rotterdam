@@ -37,6 +37,14 @@ var datos = {
    */
   _heuristica : [],
 
+
+  /**
+   * Almacena los tramos entre cada par de estaciones adyacentes por una línea
+   * 
+   * Se usa para dibujar el SVG correctamente
+   */
+  _tramos : [],
+
   /**
    * Carga el array de estaciones
    *
@@ -264,5 +272,30 @@ var datos = {
    */
   distancia : function(origen) {
     return this._heuristica[origen];
+  },
+
+  cargarTramos : function(callback) {
+    var self = this;
+    $.getJSON('data/tramos.json', function(data) {
+      console.log('hola');
+      self._tramos = data;
+      callback();
+    })
+  },
+
+
+  /**
+   * Retorna el ID de tramo entre dos estaciones por una línea
+   */
+  tramo : function(a, b, linea) {
+    var encontrado = -1;
+
+    for (var i=0; i<this._tramos.length; i++) {
+      var tramo = this._tramos[i];
+      if ((tramo.est1==a && tramo.est2==b && tramo.linea==linea) || (tramo.est1==b && tramo.est2==a && tramo.linea==linea)) {
+        encontrado = tramo.id;
+      }
+    }
+    return encontrado;
   }
 };

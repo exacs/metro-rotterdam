@@ -55,9 +55,42 @@ div.linea {
   font-weight: bold;
 }
 
+div.marca {
+  min-height: 30px;
+  width: 3px;
+  margin: 0 auto;
+}
+
 div.linea-A {background: #009245; color:#FFF;}
 div.linea-B {background: #FFFF00; color:#000;}
 div.linea-C {background: #FF0000; color:#FFF;}
 div.linea-D {background: #29ABE2; color:#FFF;}
 div.linea-E {background: #2E3192; color:#FFF;}
 
+
+svg #Lineas path,
+svg #Lineas line,
+svg #Lineas polyline {
+  fill:none;
+  
+  stroke-width:4;
+  stroke-miterlimit:10;
+}
+
+svg #A path, svg #A line, svg #A polyline {stroke:#009245}
+svg #B path, svg #B line, svg #B polyline {stroke:#FFFF00}
+svg #C path, svg #C line, svg #C polyline {stroke:#FF0000}
+svg #D path, svg #D line, svg #D polyline {stroke:#29ABE2}
+svg #E path, svg #E line, svg #E polyline {stroke:#2E3192}
+
+#mapa.iluminado path,
+#mapa.iluminado line,
+#mapa.iluminado polyline {
+  stroke-width:1;
+}
+
+#mapa.iluminado path.destacado,
+#mapa.iluminado line.destacado,
+#mapa.iluminado polyline.destacado {
+  stroke-width:6;
+}
