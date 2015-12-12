@@ -5,7 +5,7 @@ var algoritmo = {
   TIEMPO_ESPERA_MAXIMO : 30,
 
   // Tiempo que se tarda en hacer un trasbordo
-  TIEMPO_TRASBORDO : 2,
+  TIEMPO_TRASBORDO : 3,
 
   // Velocidad media del tren en km/h
   VELOCIDAD : 120,
@@ -44,7 +44,7 @@ var algoritmo = {
     var self = this;
     listaCerrada = [];
     listaAbierta.reset();
-    self.origen = {};
+    self._origen = {};
     // Carga las heurísticas necesarias
     datos.cargarHeuristica(destino.id, function() {
       console.log(datos._heuristica);
@@ -62,6 +62,7 @@ var algoritmo = {
    */
   fin : function(nodoExtraido) {
     console.log(this._hora(this._origen.hora + nodoExtraido.g) + ' / Fin del algoritmo');
+    console.log(listaCerrada);
     this._callback(listaCerrada);
   },
 
@@ -134,10 +135,15 @@ var algoritmo = {
 
       if (s<recorrido.paradas.length) {
         var transcurrido = recorrido.paradas[s].tiempo - recorrido.paradas[s-1].tiempo;
-        var nuevoTren = nodoExtraido.tren;
+        var nuevoTren = {
+          id : nodoExtraido.tren.id,
+          linea : nodoExtraido.tren.linea,
+          sentido : nodoExtraido.tren.sentido,
+          hora : nodoExtraido.tren.hora + transcurrido
+        };
         var nodoNuevo = new Nodo(
           datos.estacion(recorrido.paradas[s].idEstacion),
-          nodoExtraido.tren,
+          nuevoTren,
           nodoExtraido.g + transcurrido,
           nodoExtraido
         );
