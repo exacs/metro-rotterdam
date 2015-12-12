@@ -3,18 +3,48 @@
 }
 
 #mapa {
+  position: absolute;
   height: auto;
   width: 100%;
 }
 
-.ruta {
-  margin: 0;
-  padding: 0;
+#mapa2 {
+  position: absolute;
+  height: auto;
+  width: 100%;
 }
 
-.ruta li {
-  margin-left: 17px;
-  padding: 0;
+tr.accion-inicio td.hora,
+tr.accion-inicio td.texto,
+tr.accion-fin td.hora,
+tr.accion-fin td.texto {
+  font-style: 13px;
+  font-weight: bold;
+}
+
+tr.accion-inicio td.tren,
+tr.accion-inicio td.tren div.linea {
+  vertical-align: bottom;
+}
+
+tr.accion-fin td.tren,
+tr.accion-fin td.tren div.linea {
+  vertical-align: top;
+}
+
+td.hora {
+  color: #666;
+  font-size: 12px;
+}
+
+td.tren {
+  height: 30px;
+  width: 26px;
+  text-align: center;
+}
+
+td.texto {
+  font-size: 12px;
 }
 
 div.linea {
